@@ -17,8 +17,11 @@ logging.basicConfig(format='[%(asctime)s] %(levelname)s %(name)s: %(message)s', 
 (user, password) = getCredentialsSteam()
 client = SteamClient()
 dota = Dota2Client(client)
-Manager = dota2.features.chat.ChannelManager(dota, 'logger')
-    
+dota_channel_manager = dota2.features.chat.ChannelManager(dota, 'logger')
+
+def check_lobby_status():
+    pass
+
 @client.on('logged_on')
 def start_dota():
     dota.launch()
@@ -48,7 +51,7 @@ def create_base_lobby(filler):
         }
     dota.create_practice_lobby(password="sttsq1", options=opt)
     dota.channels.join_lobby_channel()
-    Manager.join_lobby_channel()
+    dota_channel_manager.join_lobby_channel()
     dota.join_practice_lobby_team()  # jump to unassigned players
     event.emit('check_queue')
 
@@ -73,21 +76,18 @@ def change_lobby(lobby):
     pass
 @event.on('check_queue')
 def check_queue():
-    with open('data/activate.txt', 'r+') as f:
-        lines = f.read()
-        if lines.strip() == 'yes':
-            print('Ready to send invites...')
-            df = pd.DataFrame(pd.read_csv('data/users.csv'))
-            ids = list(df['id'])
-            dota.emit('queue_full', ids)
-            f.write('no')
-        else:
-            pass
-    f.close()
+    if os.path.isfile('data/activate.txt'):
+        df = pd.DataFrame(pd.read_csv('data/users.csv'))
+        ids = list(df['id'])
+        os.remove('data/activate.txt')
+        dota.emit('queue_full', ids)
     time.sleep(0.1)
     event.emit('check_queue')
-@Manager.on('message')
-def test(c, l):
-    print(l)
+@dota_channel_manager.on('message')
+def read_message(c, message):
+    if message.text.startswith('!'):
+        print(message)
+        if message.text == '!start':
+            print(dota.lobby)
 client.cli_login(username=user, password=password)
 client.run_forever()
