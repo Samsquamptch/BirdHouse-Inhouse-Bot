@@ -28,7 +28,8 @@ class RegisterUserModal(discord.ui.Modal, title='Player Register'):
                 await interaction.response.send_message('Please enter your full Dotabuff user url when registering',
                                                         ephemeral=True,
                                                         delete_after=10)
-        except ValueError:
+        except ValueError as e:
+            print(e)
             await interaction.response.send_message('Please only enter numbers when providing your MMR',
                                                     ephemeral=True,
                                                     delete_after=10)
