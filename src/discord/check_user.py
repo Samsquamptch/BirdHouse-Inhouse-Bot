@@ -38,7 +38,8 @@ def user_embed(data_list, player_data, server):
                 data_list[n] = 1
     view_user_embed = discord.Embed(title=f'{player_data.global_name}', description=f'{user_status}',
                                     color=user_clr)
-    view_user_embed.set_thumbnail(url=f'{player_data.avatar}')
+    if player_data.avatar != None:
+        view_user_embed.set_thumbnail(url=f'{player_data.avatar}')
     view_user_embed.add_field(name='Dotabuff',
                               value=f'[{data_list[1]}](https://www.dotabuff.com/players/{data_list[1]})'
                                     f'\u1CBC\u1CBC\u1CBC\u1CBC\u1CBC\u1CBC\u1CBC\u1CBC', inline=True)

@@ -90,8 +90,8 @@ class InhouseQueue(discord.ui.View):
 
     async def test_add_user(self, interaction: discord.Interaction):
         server = interaction.guild
-        test_list = ["Hamma", "PharmarMarosh", "Lekandor", "Boo... Who?", "Abfr0", "greenman", "Glimmy", "Pocket-",
-                     "Teky", "Rock Bottom"]
+        test_list = ["Abfr0", "FaultForce", "Flossine", "FlukeY", "Harry XcX", "Jam!", "Owley", "Teky",
+                     "sonnet", "Zetsyuu"]
         for user in test_list:
             check_if_exists = check_user.user_exists(server, user)
             if user not in self.queued_players:
