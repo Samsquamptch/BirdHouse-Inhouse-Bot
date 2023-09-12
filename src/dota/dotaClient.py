@@ -112,7 +112,14 @@ def message_check(c, message):
                     return False
             if len(players) == 10:
                 dota.launch_practice_lobby()
-
+        if message.text == '!missing':
+            players = []
+            users = dota.lobby.all_members
+            print(stat.get_game())
+            for user in users:
+                if user.team == 1 or user.team == 0:
+                    players.append(user)
+            print(players)
 def check_users():
     pass
 
